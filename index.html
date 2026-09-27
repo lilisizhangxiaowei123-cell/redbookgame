@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#f6f2ea">
+  <title>烂事分拣站</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app" aria-live="polite">
+    <section id="startScreen" class="screen screen-active">
+      <div class="hero-sticker">🗑️✨</div>
+      <h1>烂事分拣站</h1>
+      <p class="subtitle">今天的破事别全往心里塞，45 秒把它们分掉。</p>
+
+      <div class="rule-card">
+        <div class="rule-row">
+          <span class="rule-icon">⚡</span>
+          <div><strong>马上搞定</strong><small>真的紧急、现在能解决</small></div>
+        </div>
+        <div class="rule-row">
+          <span class="rule-icon">📅</span>
+          <div><strong>排到明天</strong><small>重要但不必立刻处理</small></div>
+        </div>
+        <div class="rule-row">
+          <span class="rule-icon">🌪️</span>
+          <div><strong>直接放下</strong><small>无意义内耗、别人嘴碎、无法控制</small></div>
+        </div>
+      </div>
+
+      <p class="tip">连续分对会涨「清空能量」，满格后可以发动一次全场清扫。</p>
+      <button id="startButton" class="primary-button">开始分拣</button>
+    </section>
+
+    <section id="gameScreen" class="screen">
+      <header class="topbar">
+        <div class="pill"><span>⏱</span><strong id="timeText">45</strong></div>
+        <div class="pill"><span>⭐</span><strong id="scoreText">0</strong></div>
+        <div class="pill combo-pill"><span>🔥</span><strong id="comboText">x1</strong></div>
+      </header>
+
+      <section class="meter-panel">
+        <div class="meter-label">
+          <span>脑内堵塞</span>
+          <span id="clutterText">0%</span>
+        </div>
+        <div class="meter-track">
+          <div id="clutterBar" class="meter-fill clutter-fill"></div>
+        </div>
+
+        <div class="meter-label energy-label">
+          <span>清空能量</span>
+          <span id="energyText">0%</span>
+        </div>
+        <div class="meter-track">
+          <div id="energyBar" class="meter-fill energy-fill"></div>
+        </div>
+      </section>
+
+      <section class="card-zone">
+        <div id="eventCard" class="event-card">
+          <div id="eventEmoji" class="event-emoji">📱</div>
+          <div id="eventTag" class="event-tag">新烂事</div>
+          <h2 id="eventText">群里有人 @ 你，让你明早前交材料。</h2>
+          <p id="eventHint">想想：它现在真的必须处理吗？</p>
+        </div>
+        <div id="feedback" class="feedback">准备分拣</div>
+      </section>
+
+      <section class="action-grid" aria-label="分拣操作">
+        <button class="action-button action-now" data-choice="now">
+          <span class="action-emoji">⚡</span>
+          <span>马上搞定</span>
+        </button>
+        <button class="action-button action-later" data-choice="later">
+          <span class="action-emoji">📅</span>
+          <span>排到明天</span>
+        </button>
+        <button class="action-button action-drop" data-choice="drop">
+          <span class="action-emoji">🌪️</span>
+          <span>直接放下</span>
+        </button>
+      </section>
+
+      <section class="special-row">
+        <button id="breatheButton" class="special-button">
+          🌿 呼吸三秒
+          <small>本局一次，暂停并减轻堵塞</small>
+        </button>
+        <button id="clearButton" class="special-button clear-button" disabled>
+          🧹 全场清扫
+          <small>能量满格后可用</small>
+        </button>
+      </section>
+    </section>
+
+    <section id="resultScreen" class="screen">
+      <div id="resultEmoji" class="hero-sticker">🧠✨</div>
+      <h1 id="resultTitle">脑内腾出位置了</h1>
+      <p id="resultSummary" class="subtitle">你把 0 件破事成功分流。</p>
+
+      <div class="result-card">
+        <div class="result-stat"><span>最终得分</span><strong id="finalScore">0</strong></div>
+        <div class="result-stat"><span>最高连击</span><strong id="bestCombo">0</strong></div>
+        <div class="result-stat"><span>正确分拣</span><strong id="correctCount">0</strong></div>
+        <div class="result-stat"><span>最后堵塞</span><strong id="finalClutter">0%</strong></div>
+      </div>
+
+      <div id="resultQuote" class="quote-card">今天剩下的事，不必全在今天解决。</div>
+
+      <button id="againButton" class="primary-button">再清一轮</button>
+      <button id="backButton" class="ghost-button">返回首页</button>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
