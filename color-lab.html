@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>颜色对比度实验室</title>
+  <style>
+    :root { --bg:#f6f1ea; --ink:#1d1a16; --muted:#7b7368; --red:#ff2442; --line:#eadfd3; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: "PingFang SC","Noto Sans SC",sans-serif; }
+    .wrap { max-width: 480px; margin: 0 auto; padding: 18px 14px 32px; }
+    .kicker { color: var(--red); font-size: 12px; letter-spacing: .12em; }
+    h1 { font-size: 28px; margin: 6px 0 6px; }
+    p { color: var(--muted); line-height: 1.55; margin: 0 0 14px; }
+    .preview { min-height: 160px; border-radius: 20px; display: grid; place-items: center; padding: 20px; text-align: center; }
+    .preview strong { font-size: 28px; display: block; }
+    .row { display: flex; gap: 10px; margin-top: 12px; }
+    label { flex: 1; font-size: 12px; color: var(--muted); }
+    input[type="color"] { width: 100%; height: 44px; border: 1px solid var(--line); border-radius: 12px; background: #fff; padding: 4px; }
+    code { display: block; margin-top: 14px; background: #1d1a16; color: #fff8f2; border-radius: 12px; padding: 12px; font-size: 13px; line-height: 1.6; }
+    .badge { display: inline-block; margin-top: 8px; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="kicker">今天学一个前端概念</div>
+    <h1>颜色对比度实验室</h1>
+    <p>字和底色太接近，手机上就看不清。拖两个色块，看对比够不够。</p>
+    <div id="preview" class="preview">
+      <div>
+        <strong>看得清吗</strong>
+        <span id="badge" class="badge">检测中</span>
+      </div>
+    </div>
+    <div class="row">
+      <label>文字颜色<input id="fg" type="color" value="#1d1a16" /></label>
+      <label>背景颜色<input id="bg" type="color" value="#fffaf4" /></label>
+    </div>
+    <code id="out"></code>
+  </div>
+  <script>
+    var fg = document.getElementById("fg");
+    var bg = document.getElementById("bg");
+    var preview = document.getElementById("preview");
+    var badge = document.getElementById("badge");
+    var out = document.getElementById("out");
+    function lin(c) {
+      c = c / 255;
+      return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+    }
+    function lum(hex) {
+      var n = parseInt(hex.slice(1), 16);
+      var r = lin((n >> 16) & 255), g = lin((n >> 8) & 255), b = lin(n & 255);
+      return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    }
+    function paint() {
+      var L1 = lum(fg.value), L2 = lum(bg.value);
+      var ratio = (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05);
+      var ok = ratio >= 4.5;
+      preview.style.background = bg.value;
+      preview.style.color = fg.value;
+      badge.textContent = ok ? "普通正文够用" : "太接近，换一换";
+      badge.style.background = ok ? "#e8f7ef" : "#fdecee";
+      badge.style.color = ok ? "#1f8a5b" : "#ff2442";
+      out.textContent = "color: " + fg.value + ";\nbackground: " + bg.value + ";\n对比度: " + ratio.toFixed(2) + ":1";
+    }
+    fg.addEventListener("input", paint);
+    bg.addEventListener("input", paint);
+    paint();
+  </script>
+</body>
+</html>
